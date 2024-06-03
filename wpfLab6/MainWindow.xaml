@@ -7,10 +7,12 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <TextBox x:Name="tbInput" HorizontalAlignment="Left" Margin="219,42,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14"/>
-        <Label Content="Введите ваше выражение:" HorizontalAlignment="Left" Margin="10,31,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Label x:Name="lblResult" Content="" HorizontalAlignment="Left" Margin="112,90,0,0" VerticalAlignment="Top" FontSize="16" Width="151"/>
-        <Label Content="Результат:" HorizontalAlignment="Left" Margin="10,90,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button x:Name="btnCalculate" Content="Вычислить" Margin="310,0,0,53" Click="Button_Click" FontSize="16" Height="35" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="130"/>
+        <TextBox x:Name="tbInput" HorizontalAlignment="Left" Margin="186,46,0,0" MinWidth = "120" MaxWidth = "360" Width = "153" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" RenderTransformOrigin="0.5,0.535"/>
+        <Label Content="Введите выражение" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="ResultTextBox" HorizontalAlignment="Left" Margin="119,196,0,0" MinWidth = "220" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" RenderTransformOrigin="0.5,0.535"/>
+        <Label Content="Результат:" HorizontalAlignment="Left" Margin="10,186,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="tbInputX" HorizontalAlignment="Left" Margin="219,128,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" RenderTransformOrigin="0.5,0.535"/>
+        <Label Content="Введите значение для x" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button x:Name="btnCalculate" Content="Вычислить" Margin="0,346,0,0" Click="Button_Click" FontSize="16" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center" Width="130"/>
     </Grid>
 </Window>

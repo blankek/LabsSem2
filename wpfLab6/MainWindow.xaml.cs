@@ -27,9 +27,15 @@ namespace wpfLab6
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            string input = tbInput.Text;
-            double result = new RpnCalculator(input).Result;
-            lblResult.Content = result;
+            double xValue = 0;
+            if (tbInputX.Text.Trim() != "")
+            {
+                xValue = double.Parse(tbInputX.Text);
+            }
+
+            string expression = tbInput.Text;
+            RpnCalculator calculator = new RpnCalculator(expression, xValue);
+            ResultTextBox.Text = calculator.Result.ToString();         
         }
     }
 }

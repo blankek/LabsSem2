@@ -1,5 +1,4 @@
-﻿
-using System.ComponentModel;
+﻿using System.ComponentModel;
 
 namespace Rpn.Logic
 {
@@ -15,6 +14,16 @@ namespace Rpn.Logic
         public Number(double num)
         {
             Symbol = num;
+        }
+    }
+
+    class Variable : Token
+    {
+        public char Symbol { get; }
+
+        public Variable(char symbol)
+        {
+            Symbol = symbol;
         }
     }
 
@@ -60,11 +69,13 @@ namespace Rpn.Logic
     {
         private List<Token> RPN;
         public double Result;
-        public RpnCalculator(string expression)
+
+        public RpnCalculator(string expression, double xValue = 0)
         {
             RPN = toRPN(Tokenize(expression));
-            Result = Calculate(RPN);
+            Result = Calculate(RPN, xValue);
         }
+
         private List<Token> Tokenize(string input)
         {
             List<Token> tokens = new List<Token>();
@@ -79,7 +90,6 @@ namespace Rpn.Logic
                 {
                     number += ",";
                 }
-
                 else if (c == '+' || c == '-' || c == '*' || c == '/')
                 {
                     if (number != string.Empty)
@@ -97,6 +107,15 @@ namespace Rpn.Logic
                         number = string.Empty;
                     }
                     tokens.Add(new Paranthesis(c));
+                }
+                else if (c == 'x')
+                {
+                    if (number != string.Empty)
+                    {
+                        tokens.Add(new Number(double.Parse(number)));
+                        number = string.Empty;
+                    }
+                    tokens.Add(new Variable('x'));
                 }
             }
 
@@ -116,7 +135,7 @@ namespace Rpn.Logic
 
             foreach (Token token in tokens)
             {
-                if (operators.Count == 0 && !(token is Number))
+                if (operators.Count == 0 && !(token is Number) && !(token is Variable))
                 {
                     operators.Push(token);
                     continue;
@@ -162,7 +181,7 @@ namespace Rpn.Logic
                         operators.Push(token);
                     }
                 }
-                else if (token is Number)
+                else if (token is Number || token is Variable)
                 {
                     rpnOutput.Add(token);
                 }
@@ -174,27 +193,35 @@ namespace Rpn.Logic
             }
             return rpnOutput;
         }
-        private double Calculate(List<Token> rpnCalc)
+
+        private double Calculate(List<Token> rpnCalc, double xValue)
         {
             Stack<double> tempCalc = new Stack<double>();
-            double result = 0;
 
-            for (int i = 0; i < rpnCalc.Count; i++)
+            foreach (Token token in rpnCalc)
             {
-                if (rpnCalc[i] is Number num)
+                if (token is Number num)
                 {
                     tempCalc.Push(num.Symbol);
                 }
-                else
+                else if (token is Variable)
                 {
+                    tempCalc.Push(xValue);
+                }
+                else if (token is Operation op)
+                {
+                    if (tempCalc.Count < 2)
+                    {
+                        throw new InvalidOperationException("Stack empty.");
+                    }
+
                     double first = tempCalc.Pop();
                     double second = tempCalc.Pop();
 
-                    var op = (Operation)rpnCalc[i];
-
+                    double result = 0;
                     switch (op.Symbol)
                     {
-                        case '+': result = first + second; break;
+                        case '+': result = second + first; break;
                         case '-': result = second - first; break;
                         case '*': result = first * second; break;
                         case '/': result = second / first; break;
@@ -202,7 +229,13 @@ namespace Rpn.Logic
                     tempCalc.Push(result);
                 }
             }
-            return tempCalc.Peek();
+
+            if (tempCalc.Count != 1)
+            {
+                throw new InvalidOperationException("Stack should contain only one result.");
+            }
+
+            return tempCalc.Pop();
         }
     }
 }
