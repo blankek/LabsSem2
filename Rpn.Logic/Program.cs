@@ -193,6 +193,11 @@ namespace Rpn.Logic
             }
             return rpnOutput;
         }
+        public double Calculate(double xValue)
+        {
+            return Calculate(RPN, xValue);
+        }
+
 
         private double Calculate(List<Token> rpnCalc, double xValue)
         {

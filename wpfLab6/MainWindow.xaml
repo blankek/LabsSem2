@@ -5,14 +5,21 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:wpfLab6"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="473" Width="836">
     <Grid>
-        <TextBox x:Name="tbInput" HorizontalAlignment="Left" Margin="186,46,0,0" MinWidth = "120" MaxWidth = "360" Width = "153" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" RenderTransformOrigin="0.5,0.535"/>
-        <Label Content="Введите выражение" HorizontalAlignment="Left" Margin="10,41,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBox x:Name="ResultTextBox" HorizontalAlignment="Left" Margin="119,196,0,0" MinWidth = "220" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" RenderTransformOrigin="0.5,0.535"/>
-        <Label Content="Результат:" HorizontalAlignment="Left" Margin="10,186,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <TextBox x:Name="tbInputX" HorizontalAlignment="Left" Margin="219,128,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14" RenderTransformOrigin="0.5,0.535"/>
-        <Label Content="Введите значение для x" HorizontalAlignment="Left" Margin="10,117,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button x:Name="btnCalculate" Content="Вычислить" Margin="0,346,0,0" Click="Button_Click" FontSize="16" Height="35" VerticalAlignment="Top" HorizontalAlignment="Center" Width="130"/>
+        <TextBox x:Name="tbInput" HorizontalAlignment="Left" Margin="219,15,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14"/>
+        <Label Content="Введите ваше выражение:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="tbInputStar" HorizontalAlignment="Left" Margin="698,51,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14"/>
+        <Label Content="Начало:" HorizontalAlignment="Left" Margin="725,15,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="tbInputEnd" HorizontalAlignment="Left" Margin="698,113,0,0" MinWidth = "120" MaxWidth = "360" Width = "99" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14"/>
+        <Label Content="Конец:" HorizontalAlignment="Left" Margin="729,77,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="tbStep" HorizontalAlignment="Left" Margin="698,180,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14"/>
+        <Label Content="Шаг:" HorizontalAlignment="Left" Margin="737,144,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <TextBox x:Name="tbScale" HorizontalAlignment="Left" Margin="698,249,0,0" MinWidth = "120" MaxWidth = "360" Width = "Auto" TextWrapping="Wrap" VerticalAlignment="Top" TextAlignment="Center" FontSize="14"/>
+        <Label Content="Масштаб:" HorizontalAlignment="Left" Margin="721,206,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button x:Name="btnCalculate" Content="Вычислить" HorizontalAlignment="Left" Margin="679,291,0,0" VerticalAlignment="Top" Click="Button_Click" FontSize="16" RenderTransformOrigin="0.568,-1.282" Height="42" Width="147"/>
+        <Canvas x:Name="CanvasGraph" Margin="36,51,200,56" Background="#FFEDEDED" ClipToBounds="True" Width="600" Height="350"/>
+        <Label x:Name="lblCoordinateUi" Content="" HorizontalAlignment="Left" Margin="34,409,0,0" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="lblCoordinateMath" Content="" HorizontalAlignment="Left" Margin="171,409,0,0" VerticalAlignment="Top" Width="120"/>
     </Grid>
 </Window>
