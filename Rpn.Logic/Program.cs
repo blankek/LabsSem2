@@ -1,4 +1,7 @@
 ﻿using System.ComponentModel;
+using System.Drawing;
+using System.Globalization;
+using System.Linq.Expressions;
 
 namespace Rpn.Logic
 {
@@ -26,33 +29,6 @@ namespace Rpn.Logic
             Symbol = symbol;
         }
     }
-
-    class Operation : Token
-    {
-        public char Symbol { get; }
-        public int Priority { get; }
-
-        public Operation(char symbol)
-        {
-            Symbol = symbol;
-            Priority = GetPriority(symbol);
-        }
-
-        private static int GetPriority(char symbol)
-        {
-            switch (symbol)
-            {
-                case '(': return 0;
-                case ')': return 0;
-                case '+': return 1;
-                case '-': return 1;
-                case '*': return 2;
-                case '/': return 2;
-                default: return 3;
-            }
-        }
-    }
-
     class Paranthesis : Token
     {
         public char Symbol { get; }
@@ -80,30 +56,44 @@ namespace Rpn.Logic
         {
             List<Token> tokens = new List<Token>();
             string number = string.Empty;
-            foreach (var c in input)
+            for (int i = 0; i < input.Length; i++)
             {
-                if (char.IsDigit(c))
+                var c= input[i];
+                if (char.IsDigit(c) || c== '.')
                 {
                     number += c;
-                }
-                else if (c == ',' || c == '.')
-                {
-                    number += ",";
-                }
-                else if (c == '+' || c == '-' || c == '*' || c == '/')
+                }                
+                else if (c == '+' || c == '-' || c == '*' || c == '/' || c=='^')
                 {
                     if (number != string.Empty)
                     {
-                        tokens.Add(new Number(double.Parse(number)));
+                        tokens.Add(new Number(double.Parse(number, CultureInfo.InvariantCulture)));
                         number = string.Empty;
                     }
-                    tokens.Add(new Operation(c));
+                    switch (c)
+                    {
+                        case '*':
+                            tokens.Add(new Multiply());
+                            continue;
+                        case '/':
+                            tokens.Add(new Divide());
+                            continue;
+                        case '+':
+                            tokens.Add(new Plus());
+                            continue;
+                        case '-':
+                            tokens.Add(new Minus());
+                            continue;
+                        case '^':
+                            tokens.Add(new Power());
+                            continue;
+                    }
                 }
                 else if (c == '(' || c == ')')
                 {
                     if (number != string.Empty)
                     {
-                        tokens.Add(new Number(double.Parse(number)));
+                        tokens.Add(new Number(double.Parse(number, CultureInfo.InvariantCulture)));
                         number = string.Empty;
                     }
                     tokens.Add(new Paranthesis(c));
@@ -112,16 +102,51 @@ namespace Rpn.Logic
                 {
                     if (number != string.Empty)
                     {
-                        tokens.Add(new Number(double.Parse(number)));
+                        tokens.Add(new Number(double.Parse(number, CultureInfo.InvariantCulture)));
                         number = string.Empty;
                     }
                     tokens.Add(new Variable('x'));
+                }                
+                else if (c == 'l' && input.Substring(i, 3).ToLower() == "log")
+                {
+                    tokens.Add(new Log());
+                    i += 2;
+                }              
+                else if (c == 's' && input.Substring(i, 3).ToLower() == "sin")
+                {
+                    tokens.Add(new Sin());
+                    i += 2;
+                }
+                else if (c == 'c' && input.Substring(i, 3).ToLower() == "cos")
+                {
+                    tokens.Add(new Cos());
+                    i += 2;
+                }
+                else if (c == 't' && input.Substring(i, 2).ToLower() == "tg")
+                {
+                    tokens.Add(new Tg());
+                    i += 1;
+                }
+                else if (c == 'c' && input.Substring(i, 3).ToLower() == "ctg")
+                {
+                    tokens.Add(new Ctg());
+                    i += 2;
+                }
+                else if (c == 's' && input.Substring(i, 4).ToLower() == "sqrt")
+                {
+                    tokens.Add(new Sqrt());
+                    i += 3;
+                }
+                else if (c == 'r' && input.Substring(i, 2).ToLower() == "rt")
+                {
+                    tokens.Add(new Rt());
+                    i += 1;
                 }
             }
 
             if (number != string.Empty)
             {
-                tokens.Add(new Number(double.Parse(number)));
+                tokens.Add(new Number(double.Parse(number, CultureInfo.InvariantCulture)));
             }
 
             return tokens;
@@ -215,23 +240,16 @@ namespace Rpn.Logic
                 }
                 else if (token is Operation op)
                 {
-                    if (tempCalc.Count < 2)
+                    int requiredOperands = ((Operation)token).ArgsCount;
+
+                    double[] operands = new double[requiredOperands];
+                    for (int i = 0; i < requiredOperands; i++)
                     {
-                        throw new InvalidOperationException("Stack empty.");
+                        operands[i] = tempCalc.Pop();
                     }
 
-                    double first = tempCalc.Pop();
-                    double second = tempCalc.Pop();
-
-                    double result = 0;
-                    switch (op.Symbol)
-                    {
-                        case '+': result = second + first; break;
-                        case '-': result = second - first; break;
-                        case '*': result = first * second; break;
-                        case '/': result = second / first; break;
-                    }
-                    tempCalc.Push(result);
+                    double result = ((Operation)token).Execute(operands);
+                    tempCalc.Push(result);               
                 }
             }
 
